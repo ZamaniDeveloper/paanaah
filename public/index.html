@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
+<title>پناه</title>
+<link rel="stylesheet" href="/assets/fonts.css">
+<link rel="stylesheet" href="/assets/fontawesome.min.css">
+<link rel="stylesheet" href="/assets/all.min.css">
+<link rel="stylesheet" href="/assets/fancybox.css">
+<link rel="stylesheet" href="/css/style.css?v=7.0.0">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#faf5f0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="پناه">
+<link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+</head>
+<body>
+<main id="app-root">
+
+<!-- ============ LOGIN ============ -->
+<section id="page-login" class="screen" data-page="login">
+<div class="app-container">
+  <div class="login-header">
+    <div class="brand-content" style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+      <img src="/assets/logo.png" alt="پناه" style="width: 76px; height: 76px; border-radius: 22px; box-shadow: 0 8px 24px rgba(186, 74, 48, 0.25); border: 2px solid #fff; background: rgba(255, 255, 255, 0.9); object-fit: contain;">
+      <h1 class="brand-title" style="margin-top: 5px; margin-bottom: 0;">پناه</h1>
+      <p class="brand-subtitle">جایی امن برای گفتگو</p>
+    </div>
+  </div>
+  <form class="login-form" id="login-loginForm">
+    <div class="input-group"><input type="tel" id="login-mobile" placeholder="شماره موبایل" autocomplete="off"><i class="fa-solid fa-mobile-screen"></i></div>
+    <div class="input-group"><input type="password" id="login-password" placeholder="رمز عبور"><i class="fa-solid fa-lock"></i></div>
+    <div class="form-options"><label class="remember-me"><input type="checkbox" id="login-remember"><span>مرا به خاطر بسپار</span></label></div>
+    <button type="submit" class="btn btn-primary" id="login-loginBtn"><span class="btn-text">ورود</span><div class="loader"></div></button>
+    <button type="button" class="btn btn-outline" id="login-signupBtn">ثبت‌نام</button>
+  </form>
+  <div id="login-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ SIGNUP ============ -->
+<section id="page-signup" class="screen hidden" data-page="signup">
+<div class="app-container">
+  <div class="register-header"><h1>ثبت‌نام در پناه</h1><p>به جمع دوستان امن بپیوندید</p></div>
+  <div class="avatar-section">
+    <label class="avatar-wrapper" for="signup-avatarUpload">
+      <i class="fa-solid fa-user avatar-placeholder" id="signup-avatarPlaceholder"></i>
+      <img id="signup-avatarPreview" src="" alt="">
+      <div class="camera-badge"><i class="fa-solid fa-camera"></i></div>
+    </label>
+    <input type="file" id="signup-avatarUpload" accept="image/*">
+  </div>
+  <form class="register-form" id="signup-registerForm">
+    <div class="input-group"><input type="text" id="signup-fullname" placeholder="نام و نام خانوادگی" autocomplete="off"></div>
+    <div class="input-group"><input type="tel" id="signup-mobile" placeholder="شماره موبایل" autocomplete="off"></div>
+    <div class="input-group has-icon-left"><input type="password" id="signup-password" placeholder="رمز عبور"><button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button></div>
+    <div class="input-group has-icon-left"><input type="password" id="signup-confirmPassword" placeholder="تکرار رمز عبور"><button type="button" class="toggle-password"><i class="fa-solid fa-eye"></i></button></div>
+    <button type="submit" class="btn btn-primary" id="signup-registerBtn"><span class="btn-text">ثبت‌نام</span><div class="loader"></div></button>
+  </form>
+  <div class="login-prompt">قبلاً حساب دارید؟ <a href="#">ورود</a></div>
+  <div id="signup-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ CONVERSATIONS ============ -->
+<section id="page-conversations" class="screen hidden" data-page="conversations">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn" id="conv-menuBtn"><i class="fa-solid fa-bars"></i></button>
+    <h1>گفتگوها</h1>
+    <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </header>
+  <div class="search-container"><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="conversations-searchInput" placeholder="جستجو در گفتگوها"></div></div>
+  <div class="tabs-wrapper"><div class="tabs-scroll" id="conversations-tabsContainer">
+    <button class="tab-btn active" data-filter="all">همه</button>
+    <button class="tab-btn" data-filter="unread">خوانده نشده</button>
+    <button class="tab-btn" data-filter="group">گروه‌ها</button>
+    <button class="tab-btn" data-filter="channel">کانال‌ها</button>
+  </div></div>
+  <main class="page-content" id="conversations-chatList"></main>
+  <button class="fab"><i class="fa-solid fa-pen"></i></button>
+  <div class="modal-overlay" id="conversations-menuModal">
+    <div class="modal-overlay-bg"></div>
+    <div class="bottom-sheet">
+      <div class="option-item" data-action="inbox"><i class="fa-solid fa-envelope"></i><span>صندوق ورودی</span></div>
+      <div class="option-item" data-action="saved"><i class="fa-solid fa-bookmark"></i><span>پیام‌های ذخیره‌شده</span></div>
+      <div class="option-item" data-action="theme"><i class="fa-solid fa-palette"></i><span>تغییر تم</span></div>
+      <div class="option-item" data-action="logout"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>خروج</span></div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item"><i class="fa-solid fa-user"></i><span>پروفایل</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-bell"></i><span>اعلان‌ها</span></a>
+    <a href="#" class="nav-item active"><i class="fa-solid fa-message"></i><span>گفتگوها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>مخاطبین</span></a>
+  </nav>
+</div>
+</section>
+
+<!-- ============ CHAT ============ -->
+<section id="page-chat" class="screen hidden" data-page="chat">
+<div class="app-container chat-app">
+  <header class="chat-header floating-widget">
+    <button class="icon-btn" id="chat-backBtn"><i class="fa-solid fa-arrow-right"></i></button>
+    <div class="user-info" id="chat-userInfo">
+      <img src="/icons/default-avatar.png" alt="" class="avatar">
+      <div class="details"><h2>گفتگو</h2><span class="status">آفلاین</span></div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn"><i class="fa-solid fa-phone"></i></button>
+      <button class="icon-btn" id="chat-moreBtn"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+    </div>
+  </header>
+
+  <div class="reaction-popup" id="chat-reactionPopup">
+    <button class="reaction-btn" data-emoji="❤️">❤️</button>
+    <button class="reaction-btn" data-emoji="👍">👍</button>
+    <button class="reaction-btn" data-emoji="😂">😂</button>
+    <button class="reaction-btn" data-emoji="😮">😮</button>
+    <button class="reaction-btn" data-emoji="😢">😢</button>
+    <button class="reaction-btn" data-emoji="🔥">🔥</button>
+  </div>
+  <main class="chat-area" id="chat-chatArea"></main>
+  <div class="attachment-panel floating-widget" id="chat-attachPanel">
+    <div class="attach-item"><div class="icon-circle" style="background:#e74c3c"><i class="fa-solid fa-image"></i></div><span>عکس</span></div>
+    <div class="attach-item"><div class="icon-circle" style="background:#e67e22"><i class="fa-solid fa-microphone"></i></div><span>صدا</span></div>
+    <div class="attach-item"><div class="icon-circle" style="background:#9b59b6"><i class="fa-solid fa-file-lines"></i></div><span>فایل</span></div>
+    <div class="attach-item"><div class="icon-circle" style="background:#2ecc71"><i class="fa-solid fa-location-dot"></i></div><span>موقعیت</span></div>
+    <div class="attach-item"><div class="icon-circle" style="background:#3498db"><i class="fa-solid fa-user"></i></div><span>تماس</span></div>
+    <div class="attach-item"><div class="icon-circle" style="background:#f39c12"><i class="fa-solid fa-clock"></i></div><span>زمان‌بندی</span></div>
+    <div class="attach-item"><div class="icon-circle" style="background:#814652"><i class="fa-solid fa-lock"></i></div><span>مخفی</span></div>
+  </div>
+  <div class="chat-input-wrapper floating-widget">
+    <!-- Format Bar nested inside wrapper for perfect alignment -->
+    <div class="format-bar" id="chat-formatBar">
+      <button data-cmd="bold"><i class="fa-solid fa-bold"></i></button>
+      <button data-cmd="italic"><i class="fa-solid fa-italic"></i></button>
+      <button data-cmd="underline"><i class="fa-solid fa-underline"></i></button>
+      <button data-cmd="link"><i class="fa-solid fa-link"></i></button>
+    </div>
+    
+    <!-- Reply Bar nested inside wrapper -->
+    <div class="reply-bar" id="chat-replyBar" style="display:none;">
+      <div class="reply-bar-content"><i class="fa-solid fa-reply"></i><span id="chat-replyText"></span></div>
+      <button class="reply-bar-close" id="chat-replyClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <!-- Edit Bar nested inside wrapper -->
+    <div class="edit-bar" id="chat-editBar" style="display:none;">
+      <div class="edit-bar-content"><i class="fa-solid fa-pen"></i><span id="chat-editText">در حال ویرایش پیام...</span></div>
+      <button class="edit-bar-close" id="chat-editClose"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Custom Native Emoji Picker nested inside wrapper -->
+    <div class="emoji-picker" id="chat-emojiPicker" style="display:none;">
+      <div class="emoji-picker-scroll">
+        <div class="emoji-group">
+          <span class="emoji-item" data-emoji="😂">😂</span>
+          <span class="emoji-item" data-emoji="❤️">❤️</span>
+          <span class="emoji-item" data-emoji="👍">👍</span>
+          <span class="emoji-item" data-emoji="😍">😍</span>
+          <span class="emoji-item" data-emoji="😊">😊</span>
+          <span class="emoji-item" data-emoji="🤔">🤔</span>
+          <span class="emoji-item" data-emoji="😎">😎</span>
+          <span class="emoji-item" data-emoji="😭">😭</span>
+          <span class="emoji-item" data-emoji="😱">😱</span>
+          <span class="emoji-item" data-emoji="🔥">🔥</span>
+          <span class="emoji-item" data-emoji="🎉">🎉</span>
+          <span class="emoji-item" data-emoji="👏">👏</span>
+          <span class="emoji-item" data-emoji="🤫">🤫</span>
+          <span class="emoji-item" data-emoji="🥺">🥺</span>
+          <span class="emoji-item" data-emoji="🙌">🙌</span>
+          <span class="emoji-item" data-emoji="✌️">✌️</span>
+          <span class="emoji-item" data-emoji="👌">👌</span>
+          <span class="emoji-item" data-emoji="💪">💪</span>
+          <span class="emoji-item" data-emoji="🙏">🙏</span>
+          <span class="emoji-item" data-emoji="🌟">🌟</span>
+          <span class="emoji-item" data-emoji="✨">✨</span>
+          <span class="emoji-item" data-emoji="💯">💯</span>
+          <span class="emoji-item" data-emoji="🚀">🚀</span>
+          <span class="emoji-item" data-emoji="💻">💻</span>
+          <span class="emoji-item" data-emoji="📍">📍</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Chat Input Row -->
+    <div class="chat-input-row">
+      <button class="icon-btn attach-btn"><i class="fa-solid fa-paperclip"></i></button>
+      <div class="input-container">
+        <div class="msg-editor" id="chat-messageInput" contenteditable="true" data-placeholder="پیام..."></div>
+        <button class="icon-btn emoji-btn"><i class="fa-solid fa-face-smile"></i></button>
+      </div>
+      <button class="primary-btn" id="chat-sendBtn"><i class="fa-solid fa-microphone"></i></button>
+    </div>
+  </div>
+  <div class="modal-overlay" id="chat-optionsModal">
+    <div class="modal-overlay-bg"></div>
+    <div class="bottom-sheet">
+      <div class="option-item" data-action="theme"><i class="fa-solid fa-palette"></i><span>تغییر تم</span></div>
+      <div class="option-item" data-action="schedule"><i class="fa-solid fa-clock"></i><span>پیام زمان‌بندی‌شده</span></div>
+      <div class="option-item" data-action="secret"><i class="fa-solid fa-lock"></i><span>پیام مخفی</span></div>
+      <div class="option-item" data-action="clear"><i class="fa-solid fa-broom"></i><span>پاک کردن تاریخچه</span></div>
+      <div class="option-item" data-action="profile"><i class="fa-solid fa-user"></i><span>مشاهده پروفایل</span></div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="chat-themeModal">
+    <div class="modal-overlay-bg"></div>
+    <div class="bottom-sheet" style="text-align:center;padding:25px 20px;">
+      <h3 style="margin-bottom:15px;font-size:15px;">انتخاب تم</h3>
+      <div class="theme-options">
+        <button class="theme-color" style="background:#e0ece4;" data-theme-index="3"><i class="fa-solid fa-check"></i></button>
+        <button class="theme-color" style="background:#f4d3c3;" data-theme-index="0"><i class="fa-solid fa-check"></i></button>
+        <button class="theme-color" style="background:#e2c0e8;" data-theme-index="1"><i class="fa-solid fa-check"></i></button>
+        <button class="theme-color" style="background:#c3e8d1;" data-theme-index="2"><i class="fa-solid fa-check"></i></button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-overlay" id="chat-scheduleModal">
+    <div class="modal-overlay-bg"></div>
+    <div class="bottom-sheet" style="padding:20px;">
+      <h3 style="margin-bottom:12px;font-size:15px;">پیام زمان‌بندی‌شده</h3>
+      <textarea id="chat-scheduleText" class="form-textarea" placeholder="متن پیام..."></textarea>
+      <div style="display:flex;gap:10px;margin-top:12px;">
+        <div class="form-input-icon"><i class="fa-solid fa-calendar"></i><input type="date" id="chat-scheduleDate"></div>
+        <div class="form-input-icon"><i class="fa-solid fa-clock"></i><input type="time" id="chat-scheduleTime" value="10:00"></div>
+      </div>
+      <button class="btn btn-primary" id="chat-scheduleSubmit" style="margin-top:15px;">زمان‌بندی</button>
+    </div>
+  </div>
+  <div class="modal-overlay" id="chat-secretModal">
+    <div class="modal-overlay-bg"></div>
+    <div class="bottom-sheet secret-sheet">
+      <div class="secret-header"><div class="lock-icon"><i class="fa-solid fa-lock"></i></div><span>این پیام بعد از خواندن ناپدید می‌شود.</span></div>
+      <textarea id="chat-secretText" class="form-textarea" placeholder="متن پیام مخفی..." style="background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2);"></textarea>
+      <div class="timer-options">
+        <label><span>۵ ثانیه</span><input type="radio" name="chatSecretTimer" value="5"></label>
+        <label><span>۱۰ ثانیه</span><input type="radio" name="chatSecretTimer" value="10" checked></label>
+        <label><span>۳۰ ثانیه</span><input type="radio" name="chatSecretTimer" value="30"></label>
+        <label><span>۱ دقیقه</span><input type="radio" name="chatSecretTimer" value="60"></label>
+      </div>
+      <button class="btn btn-primary" id="chat-secretSubmit" style="margin-top:15px;">ارسال پیام مخفی</button>
+    </div>
+  </div>
+
+  <div id="chat-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ CONTACTS ============ -->
+<section id="page-contacts" class="screen hidden" data-page="contacts">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn" id="contacts-addBtn"><i class="fa-solid fa-user-plus"></i></button>
+    <h1>مخاطبین</h1>
+    <button class="icon-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+  </header>
+  <div class="search-container"><div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="contacts-searchInput" placeholder="جستجو در مخاطبین"></div></div>
+  <main class="page-content" id="contacts-mainContent">
+    <div id="contacts-requestsSection" style="display:none;"><div class="section-header"><h2>درخواست دوستی</h2><span class="badge" id="contacts-requestCount">0</span></div></div>
+    <div id="contacts-myContactsSection"><div class="section-header"><h2>مخاطبین من</h2></div></div>
+  </main>
+  <div class="modal-overlay" id="contacts-addModal">
+    <div class="modal-overlay-bg"></div>
+    <div class="bottom-sheet">
+      <div class="sheet-header"><span>افزودن مخاطب جدید</span><button class="close-btn"><i class="fa-solid fa-xmark"></i></button></div>
+      <p style="font-size:12px;color:#888;margin-bottom:15px;">نام کاربری یا شماره موبایل را وارد کنید</p>
+      <div class="search-box" style="margin-bottom:12px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="contacts-addInput" placeholder="مثال: 09123456789"></div>
+      <button class="btn btn-primary" id="contacts-addSubmit">جستجو و افزودن</button>
+      <div id="contacts-addResult"></div>
+    </div>
+  </div>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item"><i class="fa-solid fa-user"></i><span>پروفایل</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-bell"></i><span>اعلان‌ها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-message"></i><span>گفتگوها</span></a>
+    <a href="#" class="nav-item active"><i class="fa-solid fa-users"></i><span>مخاطبین</span></a>
+  </nav>
+  <div id="contacts-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ NOTIFICATIONS ============ -->
+<section id="page-notifications" class="screen hidden" data-page="notifications">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn" id="notif-filterBtn"><i class="fa-solid fa-filter"></i></button>
+    <h1>اعلان‌ها</h1>
+    <div class="spacer"></div>
+  </header>
+  <main class="page-content" id="notifications-notifList"></main>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item"><i class="fa-solid fa-user"></i><span>پروفایل</span></a>
+    <a href="#" class="nav-item active"><i class="fa-solid fa-bell"></i><span>اعلان‌ها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-message"></i><span>گفتگوها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>مخاطبین</span></a>
+  </nav>
+  <div id="notifications-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ PROFILE ============ -->
+<section id="page-profile" class="screen hidden" data-page="profile">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn"><i class="fa-solid fa-arrow-right"></i></button>
+    <h1>پروفایل من</h1>
+    <div class="spacer"></div>
+  </header>
+  <main class="profile-card">
+    <div class="avatar-wrapper"><img src="/icons/default-avatar.png" alt="" class="avatar"><div class="camera-badge"><i class="fa-solid fa-camera"></i></div></div>
+    <div class="user-name-wrapper"><button class="edit-name-btn"><i class="fa-solid fa-pen"></i></button><h2 class="user-name">کاربر</h2></div>
+    <div class="user-phone"></div>
+    <div class="user-bio"><i class="fa-solid fa-seedling" style="color:#4caf50"></i><span></span></div>
+    <div class="online-status">آنلاین</div>
+    <div class="settings-list">
+      <div class="setting-item"><div class="setting-icon"><i class="fa-solid fa-user"></i></div><span>اطلاعات حساب</span></div>
+      <div class="setting-item"><div class="setting-icon"><i class="fa-solid fa-lock"></i></div><span>حریم خصوصی</span></div>
+      <div class="setting-item"><div class="setting-icon"><i class="fa-solid fa-gear"></i></div><span>تنظیمات گفتگو</span></div>
+      <div class="setting-item"><div class="setting-icon"><i class="fa-solid fa-bookmark"></i></div><span>پیام‌های ذخیره‌شده</span></div>
+      <div class="setting-item"><div class="setting-icon"><i class="fa-solid fa-display"></i></div><span>دستگاه‌های متصل</span></div>
+      <div class="setting-item" id="setting-notif-row">
+        <div class="setting-icon"><i class="fa-solid fa-bell"></i></div>
+        <span>اعلانات مرورگر</span>
+        <label class="toggle-switch" onclick="event.stopPropagation();">
+          <input type="checkbox" id="profile-notif-toggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="setting-item"><div class="setting-icon"><i class="fa-solid fa-rotate"></i></div><span>بررسی بروزرسانی</span></div>
+    </div>
+  </main>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item active"><i class="fa-solid fa-user"></i><span>پروفایل</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-bell"></i><span>اعلان‌ها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-message"></i><span>گفتگوها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>مخاطبین</span></a>
+  </nav>
+  <div id="profile-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ EDIT PROFILE ============ -->
+<section id="page-edit-profile" class="screen hidden" data-page="edit-profile">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn" id="editprofile-back"><i class="fa-solid fa-arrow-right"></i></button>
+    <h1>ویرایش پروفایل</h1>
+    <button class="icon-btn" id="editprofile-save" style="color:#ba4a30;font-size:13px;font-weight:bold;">ذخیره</button>
+  </header>
+  <div style="flex:1;padding:20px 25px;display:flex;flex-direction:column;gap:20px;overflow-y:auto;">
+    <div style="display:flex;justify-content:center;"><div style="position:relative;"><img id="editprofile-avatar" src="/icons/default-avatar.png" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 3px 8px rgba(0,0,0,.1);"><label for="editprofile-avatarInput" class="camera-badge" style="position:absolute;bottom:2px;right:2px;"><i class="fa-solid fa-camera"></i></label><input type="file" id="editprofile-avatarInput" accept="image/*" style="display:none;"></div></div>
+    <div class="form-field"><label>نام</label><input type="text" id="editprofile-name" placeholder="نام شما"></div>
+    <div class="form-field"><label>بیوگرافی</label><textarea id="editprofile-bio" placeholder="درباره شما..."></textarea></div>
+  </div>
+  <div id="editprofile-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ PEER PROFILE ============ -->
+<section id="page-peer-profile" class="screen hidden" data-page="peer-profile">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn"><i class="fa-solid fa-arrow-right"></i></button>
+    <h1>مشاهده پروفایل</h1>
+    <div class="spacer"></div>
+  </header>
+  <main class="profile-card">
+    <div class="avatar-wrapper">
+      <img src="/icons/default-avatar.png" alt="" class="avatar skeleton-img">
+    </div>
+    <div class="user-name-wrapper">
+      <h2 class="user-name skeleton-text">‌‌‌‌‌‌‌‌‌‌‌‌</h2>
+    </div>
+    <div class="user-bio" id="peer-profile-bioText">
+      <i class="fa-solid fa-seedling" style="color:#4caf50"></i>
+      <span class="skeleton-text">‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌‌</span>
+      <button class="copy-btn" style="background:none; border:none; color:var(--text-muted); cursor:pointer; margin-right:8px; font-size:12px;"><i class="fa-solid fa-copy"></i></button>
+    </div>
+    <div class="online-status skeleton-text">‌‌‌‌‌</div>
+    
+    <div class="settings-list" style="width: 100%; margin-top: 15px;">
+      <div class="setting-item">
+        <div class="setting-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+        <div style="display:flex; flex-direction:column; align-items:flex-start;">
+          <span class="info-value skeleton-text" style="font-weight:bold; font-size:13px; color:var(--text-main);">‌‌‌‌‌‌‌‌‌‌</span>
+          <span style="font-size:11px; color:var(--text-muted);">شماره موبایل</span>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-icon"><i class="fa-solid fa-at"></i></div>
+        <div style="display:flex; flex-direction:column; align-items:flex-start;">
+          <span class="info-value skeleton-text" style="font-weight:bold; font-size:13px; color:var(--text-main);">‌‌‌‌‌‌‌‌‌‌</span>
+          <span style="font-size:11px; color:var(--text-muted);">نام کاربری</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons" style="display:flex; gap:12px; width:100%; margin-top:25px; justify-content:center;">
+      <button class="btn btn-outline" style="flex:1; max-width:160px; padding:11px; border-radius:12px; font-size:13px;">افزودن به مخاطبین</button>
+      <button class="btn btn-primary" style="flex:1; max-width:160px; padding:11px; border-radius:12px; font-size:13px;">پیام</button>
+    </div>
+  </main>
+  <div id="peer-profile-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ INBOX ============ -->
+<section id="page-inbox" class="screen hidden" data-page="inbox">
+<div class="app-container">
+  <header class="page-header">
+    <button class="icon-btn" id="inbox-backBtn"><i class="fa-solid fa-arrow-right"></i></button>
+    <div style="flex:1;text-align:center;"><h1 style="font-size:16px;">صندوق ورودی</h1><span style="font-size:11px;color:#888;">پیام‌ها از افراد ناشناس</span></div>
+    <div class="spacer"></div>
+  </header>
+  <div class="info-banner"><i class="fa-solid fa-shield-halved"></i><p>پیام‌ها تا زمان پذیرش در اینجا باقی می‌مانند.</p></div>
+  <main class="page-content" id="inbox-requestList"></main>
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item"><i class="fa-solid fa-user"></i><span>پروفایل</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-bell"></i><span>اعلان‌ها</span></a>
+    <a href="#" class="nav-item active"><i class="fa-solid fa-message"></i><span>گفتگوها</span></a>
+    <a href="#" class="nav-item"><i class="fa-solid fa-users"></i><span>مخاطبین</span></a>
+  </nav>
+  <div id="inbox-toast" class="toast"></div>
+</div>
+</section>
+
+<!-- ============ STATES (THEME) ============ -->
+<section id="page-states" class="screen hidden" data-page="states">
+<div class="app-container states-app" style="background: var(--bg-color);">
+  <header class="page-header">
+    <button class="icon-btn close-btn" id="states-backBtn"><i class="fa-solid fa-arrow-right"></i></button>
+    <h1>تنظیمات ظاهری</h1>
+    <div class="spacer"></div>
+  </header>
+  <main class="page-content" style="padding: 24px; display: flex; flex-direction: column; justify-content: center; gap: 24px; height: calc(100% - 130px);">
+    <div style="background: var(--surface-color); border-radius: 24px; padding: 32px 20px; text-align: center; border: 1px solid var(--border-color); box-shadow: 0 12px 30px rgba(139, 124, 115, 0.08);">
+      <div style="width: 64px; height: 64px; background: rgba(183, 110, 80, 0.1); color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 28px;">
+        <i class="fa-solid fa-palette"></i>
+      </div>
+      <h3 style="margin-bottom: 8px; font-size: 16px; font-weight: 700; color: var(--text-main);">پوسته نرم‌افزار</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 24px;">یکی از ترکیب‌های رنگی زیر را برای تم سراسری برنامه انتخاب کنید:</p>
+      
+      <div class="theme-options" style="max-width: 280px; margin: 0 auto;">
+        <button class="theme-color" style="background:#e0ece4;" data-theme-index="3"><i class="fa-solid fa-check"></i></button>
+        <button class="theme-color" style="background:#f4d3c3;" data-theme-index="0"><i class="fa-solid fa-check"></i></button>
+        <button class="theme-color" style="background:#e2c0e8;" data-theme-index="1"><i class="fa-solid fa-check"></i></button>
+        <button class="theme-color" style="background:#c3e8d1;" data-theme-index="2"><i class="fa-solid fa-check"></i></button>
+      </div>
+    </div>
+  </main>
+  <div id="states-toast" class="toast"></div>
+</div>
+</section>
+
+</main>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/assets/fancybox.umd.js"></script>
+<script src="/assets/fontawesome.min.js"></script>
+<script src="/assets/solid.min.js"></script>
+<script src="/js/indexedDb.js"></script>
+<script src="/js/app.js?v=7.0.0" defer></script>
+</body>
+</html>
