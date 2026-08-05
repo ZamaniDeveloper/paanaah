@@ -62,21 +62,92 @@
 - Multer، TUS و Jimp برای آپلود و پردازش فایل
 - HTML، CSS و JavaScript بدون فریم‌ورک در سمت کاربر
 
-### راه‌اندازی محلی
+### کلون، نصب و راه‌اندازی
 
-پیش‌نیاز: Node.js 18 یا جدیدتر.
+#### پیش‌نیازها
+
+- Git
+- Node.js 18 یا جدیدتر و npm
+- Redis فقط برای محیط‌های چندکاربره یا استقرار واقعی پیشنهاد می‌شود؛ اجرای محلی بدون Redis نیز امکان‌پذیر است.
+
+نسخه ابزارها را بررسی کنید:
 
 ```bash
-npm install
+git --version
+node --version
+npm --version
 ```
 
-فایل `.env.example` را با نام `.env` کپی کنید و حداقل یک مقدار تصادفی و طولانی برای `JWT_SECRET` قرار دهید. سپس برنامه را اجرا کنید:
+#### ۱. دریافت پروژه
+
+```bash
+git clone https://github.com/ZamaniDeveloper/paanaah.git
+cd paanaah
+```
+
+#### ۲. نصب وابستگی‌ها
+
+برای نصب دقیق نسخه‌های ثبت‌شده در `package-lock.json` از دستور زیر استفاده کنید:
+
+```bash
+npm ci
+```
+
+#### ۳. ساخت فایل تنظیمات
+
+در Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+در Linux یا macOS:
+
+```bash
+cp .env.example .env
+```
+
+یک کلید تصادفی تولید کنید:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+خروجی دستور را در فایل `.env` مقابل `JWT_SECRET=` قرار دهید. مقدار `PORT` به‌صورت پیش‌فرض `3000` است.
+
+بدون `REDIS_URL`، برنامه به‌طور خودکار داده‌ها را در `data/local-store.json` ذخیره می‌کند. برای استفاده از Redis، آدرس اتصال را تنظیم کنید؛ برای نمونه:
+
+```dotenv
+REDIS_URL=redis://127.0.0.1:6379
+```
+
+فعال‌سازی اعلان Push اختیاری است. برای تولید کلیدهای VAPID اجرا کنید و مقادیر خروجی را در `.env` قرار دهید:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+#### ۴. اجرای برنامه
 
 ```bash
 npm start
 ```
 
-برنامه به‌صورت پیش‌فرض در `http://127.0.0.1:3000` در دسترس است. بدون `REDIS_URL`، داده‌ها در `data/local-store.json` ذخیره می‌شوند. برای اعلان‌های Push باید جفت کلید VAPID را در متغیرهای محیطی تنظیم کنید.
+بعد از نمایش پیام اجرای سرور، آدرس زیر را در مرورگر باز کنید:
+
+```text
+http://127.0.0.1:3000
+```
+
+برای توقف سرور در ترمینال `Ctrl+C` را فشار دهید.
+
+#### ۵. دریافت به‌روزرسانی‌های بعدی
+
+```bash
+git pull
+npm ci
+npm start
+```
 
 ### متغیرهای محیطی
 
@@ -164,21 +235,92 @@ Paanaah is a Persian, right-to-left messaging and social networking application 
 - Multer, TUS, and Jimp for file upload and processing
 - Framework-free HTML, CSS, and JavaScript on the client
 
-### Local setup
+### Clone, installation, and setup
 
-Requirement: Node.js 18 or newer.
+#### Prerequisites
+
+- Git
+- Node.js 18 or newer and npm
+- Redis is recommended for multi-user or production deployments, but it is not required for local use.
+
+Verify the installed tools:
 
 ```bash
-npm install
+git --version
+node --version
+npm --version
 ```
 
-Copy `.env.example` to `.env` and set at least a long, random value for `JWT_SECRET`. Then start the application:
+#### 1. Clone the repository
+
+```bash
+git clone https://github.com/ZamaniDeveloper/paanaah.git
+cd paanaah
+```
+
+#### 2. Install dependencies
+
+Use the lockfile to install the exact recorded dependency versions:
+
+```bash
+npm ci
+```
+
+#### 3. Create the environment file
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+On Linux or macOS:
+
+```bash
+cp .env.example .env
+```
+
+Generate a random secret:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+Paste the output after `JWT_SECRET=` in `.env`. The default `PORT` is `3000`.
+
+When `REDIS_URL` is unset, the application automatically stores data in `data/local-store.json`. To use Redis, configure its connection URL, for example:
+
+```dotenv
+REDIS_URL=redis://127.0.0.1:6379
+```
+
+Browser push notifications are optional. Generate a VAPID key pair and copy the resulting values to `.env`:
+
+```bash
+npx web-push generate-vapid-keys
+```
+
+#### 4. Start the application
 
 ```bash
 npm start
 ```
 
-The application is available at `http://127.0.0.1:3000` by default. When `REDIS_URL` is not configured, data is stored in `data/local-store.json`. To enable browser push notifications, configure a VAPID key pair in the environment.
+After the server reports that it is running, open the following address in a browser:
+
+```text
+http://127.0.0.1:3000
+```
+
+Press `Ctrl+C` in the terminal to stop the server.
+
+#### 5. Pull future updates
+
+```bash
+git pull
+npm ci
+npm start
+```
 
 ### Environment variables
 
