@@ -1,10 +1,28 @@
 {
-  "name": "rayapars",
+  "name": "paanaah",
   "version": "1.0.0",
+  "description": "Persian real-time messaging and social networking PWA",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "check": "node --check server.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZamaniDeveloper/paanaah.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ZamaniDeveloper/paanaah/issues"
+  },
+  "homepage": "https://github.com/ZamaniDeveloper/paanaah#readme",
+  "keywords": [
+    "messaging",
+    "socket.io",
+    "redis",
+    "pwa",
+    "rtl",
+    "persian"
+  ],
   "license": "ISC",
   "dependencies": {
     "@tus/file-store": "^2.0.0",
