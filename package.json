@@ -1,7 +1,7 @@
 {
-  "name": "paanaah",
+  "name": "panah",
   "version": "1.0.0",
-  "description": "Persian real-time messaging and social networking PWA",
+  "description": "Persian real-time chat, messaging and social networking PWA built with Node.js, Socket.IO and Redis",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -16,10 +16,17 @@
   },
   "homepage": "https://github.com/ZamaniDeveloper/paanaah#readme",
   "keywords": [
-    "messaging",
+    "chat-app",
+    "messaging-app",
+    "real-time-chat",
+    "social-network",
+    "nodejs",
+    "express",
     "socket.io",
     "redis",
     "pwa",
+    "web-push",
+    "indexeddb",
     "rtl",
     "persian"
   ],
